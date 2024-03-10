@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import 'package:movie_api/app/utils/images.dart';
+import 'package:movie_api/app/views/home/auth/forgetpass_page/forget.dart';
 import 'package:movie_api/app/views/home/auth/signup_page/signup.dart';
+import 'package:movie_api/app/views/home/HomePages/main_page.dart';
 
 import '../../../../utils/colors.dart';
 import '../../../widgets/SignUpButton.dart';
@@ -14,8 +16,9 @@ import '../../../widgets/google_button.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  TextEditingController emailC = TextEditingController();
-  TextEditingController passwordC = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +37,7 @@ class LoginScreen extends StatelessWidget {
               Text(
                 'Hi, Welcome Back! 👋',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ).copyWith(color: AppColors.kWhite, fontSize: 20),
@@ -43,7 +46,7 @@ class LoginScreen extends StatelessWidget {
               Text(
                 'We happy to see you. Sign In to your account',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
+                style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.kWhite)
@@ -55,7 +58,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Email',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: AppColors.kWhite)
@@ -67,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  PField(controller: emailC, width: 327, height: 52)
+                  PField(controller: email, width: 327, height: 52)
                 ],
               ),
               const SizedBox(
@@ -78,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Password',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: AppColors.kWhite)
@@ -88,7 +91,7 @@ class LoginScreen extends StatelessWidget {
                             fontSize: 14),
                   ),
                   const SizedBox(height: 8),
-                  PField(controller: passwordC, width: 327, height: 52)
+                  PField(controller: password, width: 327, height: 52)
                 ],
               ),
               const SizedBox(height: 16),
@@ -96,7 +99,9 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ForgotButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const ForgetPass());
+                    },
                     title: 'Forgot Password?',
                     textStyle: const TextStyle(color: AppColors.kWhite),
                   )
@@ -106,8 +111,13 @@ class LoginScreen extends StatelessWidget {
               Column(
                 children: [
                   PButton(
-                    // elevation: 0,
-                    onTap: () {},
+                    onTap: () async {
+                      // AuthController().signInUser(email.text, password.text);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MainPage()));
+                    },
                     text: 'LogIn',
                     color: AppColors.kPrimary,
                     borderRadius: 20,
@@ -125,10 +135,9 @@ class LoginScreen extends StatelessWidget {
                       title: 'Don’t have an account?',
                       subtitle: ' Create here',
                       onTab: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => SignUp()));
+                        Get.to(() => const SignUp());
                       },
-                      subtitleTextStyle: GoogleFonts.plusJakartaSans(
+                      subtitleTextStyle: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: AppColors.kWhite)
@@ -151,7 +160,9 @@ class LoginScreen extends StatelessWidget {
                         height: 56,
                         textColor: AppColors.kWhite,
                         width: 280,
-                        onTap: () {},
+                        onTap: () async {
+                          // await FirebaseServices().signInWithGoolge();
+                        },
                         borderRadius: 24,
                         bgColor: AppColors.kBackground.withOpacity(0.3),
                         text: 'Continue with Google',

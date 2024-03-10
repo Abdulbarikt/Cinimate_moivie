@@ -1,4 +1,3 @@
-
 import '../utils/images.dart';
 
 class Onboarding {
@@ -24,5 +23,11 @@ List<Onboarding> onboardingList = [
     title: "Enter the Reel World with CinemaSphere: Where Every Genre Shines!",
     info:
         'Explore Thousands of Titles, Engaging Recommendations, and Exciting Features Await You! ',
+  ),
+  Onboarding(
+    bgImage: AppAssets.kOnboardingThird,
+    title: "Discover the Magic of Storytelling on Screen",
+    info:
+        ' Immerse yourself in captivating narratives and characters that will transport you to new worlds. ',
   ),
 ];

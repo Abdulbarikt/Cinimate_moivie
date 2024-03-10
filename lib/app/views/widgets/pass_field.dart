@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/colors.dart';
 
@@ -21,7 +20,7 @@ class PassField extends StatefulWidget {
 }
 
 class _PassFieldState extends State<PassField> {
-  bool _obscureText = true; 
+  bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     OutlineInputBorder border = OutlineInputBorder(
@@ -32,7 +31,7 @@ class _PassFieldState extends State<PassField> {
     return TextFormField(
       obscureText: _obscureText, // Set obscureText to true
       controller: widget.controller,
-      style: GoogleFonts.plusJakartaSans(
+      style: const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: AppColors.kWhite,
@@ -57,7 +56,7 @@ class _PassFieldState extends State<PassField> {
             });
           },
         ),
-        hintStyle: GoogleFonts.plusJakartaSans(
+        hintStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: AppColors.kWhite,

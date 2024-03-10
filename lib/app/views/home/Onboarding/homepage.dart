@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:movie_api/app/views/home/auth/login_page/login.dart';
 
 import '../../../models/onboarding.dart';
@@ -58,10 +59,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
               PButton(
                 onTap: () {
                   if (_currentIndex == onboardingList.length - 1) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
+                    Get.off(() => LoginScreen());
+                    print('Get Started');
                   } else {
                     _pageController.nextPage(
                       duration: const Duration(milliseconds: 500),
@@ -69,7 +68,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     );
                   }
                 },
-                text: 'Continue',
+                text: _currentIndex == onboardingList.length - 1
+                    ? 'Get Started'
+                    : 'Continue',
               ),
               const SizedBox(height: 30),
             ],

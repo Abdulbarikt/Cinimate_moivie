@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_api/app/utils/colors.dart';
 
 class GoogleButton extends StatefulWidget {
@@ -80,7 +79,7 @@ class _GoogleButtonState extends State<GoogleButton>
               Image.asset(widget.icons, width: 23.85, height: 23.04),
               const SizedBox(width: 12),
               Text(widget.text,
-                  style: GoogleFonts.plusJakartaSans(
+                  style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: AppColors.kWhite)
