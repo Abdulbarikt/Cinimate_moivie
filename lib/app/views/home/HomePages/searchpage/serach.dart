@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:movie_api/app/utils/colors.dart';
 
 class Search extends StatelessWidget {
@@ -42,7 +43,6 @@ class Search extends StatelessWidget {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                // Customize border color and width
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide:
@@ -51,6 +51,21 @@ class Search extends StatelessWidget {
               ),
               style: const TextStyle(color: AppColors.kWhite),
             ),
+            const SizedBox(
+              height: 90,
+            ),
+            Column(
+              children: [
+                Lottie.asset("assets/images/No_data.json"),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Text(
+                  "Search for your favorite movies ",
+                  style: TextStyle(fontSize: 13, color: AppColors.kPrimary),
+                )
+              ],
+            )
           ],
         ),
       ),

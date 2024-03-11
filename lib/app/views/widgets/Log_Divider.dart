@@ -21,12 +21,12 @@ class Log_Divider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 6),
           child: Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.kWhite)
+                    color: AppColors.kBlackColor)
                 .copyWith(
-                    color: AppColors.kGrayscale40,
+                    color: AppColors.kWhite,
                     fontWeight: FontWeight.w500,
                     fontSize: 14),
           ),

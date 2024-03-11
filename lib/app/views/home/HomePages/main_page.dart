@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie_api/app/views/home/HomePages/newspage/news.dart';
 
-import '../../../controller/bottom_nav.dart';
+import '../../widgets/bottom_nav.dart';
 import '../../../utils/colors.dart';
 import 'homepage/homepage.dart';
 import 'profilepage/profile.dart';
@@ -20,6 +21,7 @@ class _MainPageState extends State<MainPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const Search(),
+    const News(),
     const WishList(),
     const Profile(),
   ];

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/colors.dart';
+import '../../utils/colors.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
@@ -32,6 +32,10 @@ class BottomNavigationBarWidget extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(CupertinoIcons.search, size: 20),
           label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.news, size: 20),
+          label: 'News',
         ),
         BottomNavigationBarItem(
           icon: Icon(CupertinoIcons.heart, size: 20),

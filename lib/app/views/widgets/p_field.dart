@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 class PField extends StatelessWidget {
   const PField({
     super.key,
@@ -16,6 +15,7 @@ class PField extends StatelessWidget {
     this.prefixIconColor,
     this.inputFormatters,
     this.maxLines,
+    this.hintText, // Make hintText optional
   });
 
   final List<TextInputFormatter>? inputFormatters;
@@ -27,11 +27,12 @@ class PField extends StatelessWidget {
   final Color? hintTextColor, prefixIconColor;
   final TextInputType? keyboardType;
   final int? maxLines;
+  final String? hintText; // Make hintText optional
 
   @override
   Widget build(BuildContext context) {
     final OutlineInputBorder border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(10),
       borderSide: const BorderSide(color: Colors.grey),
     );
 
@@ -49,11 +50,12 @@ class PField extends StatelessWidget {
         fillColor: Colors.black,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: Colors.white,
+          color: hintTextColor ?? Colors.white,
         ),
+        hintText: hintText, // Use provided hintText if available
         prefixIcon: prefixIcon,
         prefixIconColor: prefixIconColor,
         enabledBorder: border,

@@ -22,7 +22,7 @@ class AuthController extends GetxController {
         'email': email,
         'uid': currentUser.uid,
       });
-      Get.to(() => const MainPage());
+     
       print('User created: ${userCredential.user!.email}');
     } catch (e) {
       print('Error creating user: $e');
@@ -37,7 +37,7 @@ class AuthController extends GetxController {
         password: password,
       );
 
-      Get.to(() => const MainPage());
+      Get.to(() =>  MainPage());
       print('User signed in: ${userCredential.user!.email}');
     } catch (e) {
       // Print and handle errors

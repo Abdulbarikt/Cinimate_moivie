@@ -12,6 +12,7 @@ class SignUpButton extends StatelessWidget {
   });
   final String title, subtitle;
   final TextStyle subtitleTextStyle;
+
   final VoidCallback onTab;
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class SignUpButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: AppColors.kWhite)
               .copyWith(
-                  color: AppColors.kGrayscale40,
+                  color: AppColors.kBlackColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 14),
           children: <TextSpan>[

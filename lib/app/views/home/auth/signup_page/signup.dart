@@ -19,163 +19,148 @@ class SignUp extends StatelessWidget {
     TextEditingController username = TextEditingController();
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
-    return Scaffold(
-      backgroundColor: AppColors.kBlackColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: SizedBox(
-            width: 327,
-            child: Column(children: [
-              Text(
-                'Create Account',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ).copyWith(
-                    color: AppColors.kWhite,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 24),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'We happy to see you. Sign Up to your account',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.kWhite)
-                    .copyWith(
-                        color: AppColors.kGrayscale40,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Username',
-                    style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kWhite)
-                        .copyWith(
-                            color: AppColors.kWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                  ),
-                  const SizedBox(height: 8),
-                  PField(controller: username, width: 327, height: 52)
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Email',
-                    style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kWhite)
-                        .copyWith(
-                            color: AppColors.kWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                  ),
-                  const SizedBox(height: 7),
-                  PField(controller: email, width: 327, height: 52)
-                ],
-              ),
-              const SizedBox(height: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Password',
-                    style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kWhite)
-                        .copyWith(
-                            color: AppColors.kWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                  ),
-                  const SizedBox(height: 8),
-                  PField(controller: password, width: 327, height: 52)
-                ],
-              ),
-              const SizedBox(height: 28),
-              Column(
-                children: [
-                  PButton(
-                    // elevation: 0,
-                    onTap: () async {
-                      AuthController().registerUser(
-                          username.text, email.text, password.text);
-                    },
-                    text: 'Create Account',
 
-                    borderRadius: 20,
-                    height: 46,
-                    width: 327,
-                  ),
-                  const SizedBox(height: 20),
-                  SignUpButton(
-                    title: 'Already have an account? ',
-                    subtitle: 'Log In',
-                    onTab: () {
-                      Get.to(() => LoginScreen());
-                    },
-                    subtitleTextStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.kWhite)
-                        .copyWith(
-                            color: AppColors.kWhite,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                  )
-                ],
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      child: Log_Divider(title: 'Or Sign Up with'),
-                    ),
-                    const SizedBox(height: 24),
-                    GoogleButton(
-                        height: 56,
-                        textColor: AppColors.kWhite,
-                        width: 260,
-                        onTap: () {},
-                        borderRadius: 24,
-                        bgColor: AppColors.kBackground.withOpacity(0.3),
-                        text: 'Continue with Google',
-                        icons: AppAssets.kGoogleLogo),
-                  ],
-                ),
-              ),
-            ]),
+    return Scaffold(
+        body: Stack(children: [
+      Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/login.png'),
+            fit: BoxFit.cover,
           ),
         ),
       ),
-    );
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: SizedBox(
+          width: 327,
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              'Create Account',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ).copyWith(
+                  color: AppColors.kWhite,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'We happy to see you. Sign Up to your account',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.kWhite)
+                  .copyWith(
+                      color: AppColors.kGrayscale40,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                PField(
+                  controller: username,
+                  width: 327,
+                  height: 52,
+                  hintText: 'Username',
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 7),
+                PField(
+                  controller: email,
+                  width: 327,
+                  height: 52,
+                  hintText: 'Email',
+                )
+              ],
+            ),
+            const SizedBox(height: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                PField(
+                  controller: password,
+                  width: 327,
+                  height: 52,
+                  hintText: 'Password',
+                )
+              ],
+            ),
+            const SizedBox(height: 18),
+            Column(
+              children: [
+                PButton(
+                  // elevation: 0,
+                  onTap: () async {
+                    AuthController()
+                        .registerUser(email.text, password.text, username.text);
+                    Get.to(() => LoginScreen());
+                  },
+                  text: 'Create Account',
+
+                  borderRadius: 20,
+                  height: 46,
+                  width: 327,
+                ),
+                const SizedBox(height: 10),
+                SignUpButton(
+                  title: 'Already have an account? ',
+                  subtitle: 'Log In',
+                  onTab: () {
+                    Get.to(() => LoginScreen());
+                  },
+                  subtitleTextStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.kWhite)
+                      .copyWith(
+                          color: AppColors.kWhite,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Log_Divider(title: 'Or Sign Up with'),
+                  ),
+                  const SizedBox(height: 14),
+                  GoogleButton(
+                      height: 56,
+                      textColor: AppColors.kWhite,
+                      width: 260,
+                      onTap: () {},
+                      borderRadius: 24,
+                      bgColor: AppColors.kBackground.withOpacity(0.3),
+                      text: 'Continue with Google',
+                      icons: AppAssets.kGoogleLogo),
+                ],
+              ),
+            ),
+          ]),
+        ),
+      ),
+    ]));
   }
 }
