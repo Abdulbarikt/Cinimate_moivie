@@ -1,4 +1,3 @@
-
 class Trending {
   bool? adult;
   String? backdropPath;
@@ -47,27 +46,7 @@ class Trending {
     popularity = json['popularity'];
     releaseDate = json['release_date'];
     video = json['video'];
-    voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'].toDouble();
     voteCount = json['vote_count'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['adult'] = adult;
-    data['backdrop_path'] = backdropPath;
-    data['id'] = id;
-    data['title'] = title;
-    data['original_language'] = originalLanguage;
-    data['original_title'] = originalTitle;
-    data['overview'] = overview;
-    data['poster_path'] = posterPath;
-    data['media_type'] = mediaType;
-    data['genre_ids'] = genreIds;
-    data['popularity'] = popularity;
-    data['release_date'] = releaseDate;
-    data['video'] = video;
-    data['vote_average'] = voteAverage;
-    data['vote_count'] = voteCount;
-    return data;
   }
 }

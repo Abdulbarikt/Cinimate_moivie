@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../models/trending.dart';
 import '../../../../services/api/apikey.dart';
 import '../../../../utils/colors.dart';
-import 'carosal.dart';
+import 'widgets/toprated.dart';
+import 'widgets/trendingmovies.dart';
+import 'widgets/upcoming.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,10 +16,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<Trending>> trendingMovies;
+  late Future<List<Trending>> topRated;
+  late Future<List<Trending>> upcoming;
+
   @override
   void initState() {
     super.initState();
     trendingMovies = ApiKey().getTrendingMovies();
+    topRated = ApiKey().getTopRated();
+    upcoming = ApiKey().getUpcoming();
   }
 
   @override
@@ -74,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 19, bottom: 20),
                   child: Text(
-                    "Trending Movies",
+                    "Top Rated Movies",
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -82,23 +89,18 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            color: Colors.amber,
-                            height: 200,
-                            width: 150,
-                          ),
-                        ),
-                      );
+                  child: FutureBuilder(
+                    future: topRated,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.hasError.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return TopRatedSlider(snapshot: snapshot);
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
                     },
                   ),
                 ),
@@ -108,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 19, bottom: 20),
                   child: Text(
-                    "Trending Movies",
+                    "Upcoming Movies",
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -116,26 +118,21 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            color: Colors.amber,
-                            height: 200,
-                            width: 150,
-                          ),
-                        ),
-                      );
+                  child: FutureBuilder(
+                    future: upcoming,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.hasError.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return UpcoimgSlider(snapshot: snapshot);
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),
