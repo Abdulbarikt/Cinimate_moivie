@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_api/app/models/tvshow.dart';
+import 'package:movie_api/app/views/home/HomePages/homepage/widgets/popular.dart';
 
 import '../../../../models/trending.dart';
 import '../../../../services/api/apikey.dart';
@@ -18,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Trending>> trendingMovies;
   late Future<List<Trending>> topRated;
   late Future<List<Trending>> upcoming;
+  late Future<List<TvShow>> popular;
 
   @override
   void initState() {
@@ -25,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     trendingMovies = ApiKey().getTrendingMovies();
     topRated = ApiKey().getTopRated();
     upcoming = ApiKey().getUpcoming();
+    popular = ApiKey().getPopularTvShows();
   }
 
   @override
@@ -127,6 +131,35 @@ class _HomePageState extends State<HomePage> {
                         );
                       } else if (snapshot.hasData) {
                         return UpcoimgSlider(snapshot: snapshot);
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 19, bottom: 20),
+                  child: Text(
+                    "Popular Tv Shows",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.kPrimary),
+                  ),
+                ),
+                SizedBox(
+                  child: FutureBuilder(
+                    future: popular,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.hasError.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return PopularTvShowSlider(snapshot: snapshot);
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }

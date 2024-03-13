@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:movie_api/app/models/cast.dart';
 import 'package:movie_api/app/models/trending.dart';
 import 'package:movie_api/app/services/api/apikey.dart';
 import 'package:movie_api/app/utils/colors.dart';
 import 'package:movie_api/app/views/home/HomePages/homepage/widgets/upcoming.dart';
 
 class DetialPage extends StatefulWidget {
+  final movie;
   const DetialPage({super.key, required this.movie});
-  final Trending movie;
 
   @override
   State<DetialPage> createState() => _DetialPageState();
@@ -14,10 +15,12 @@ class DetialPage extends StatefulWidget {
 
 class _DetialPageState extends State<DetialPage> {
   late Future<List<Trending>> upcoming;
+  late Future<List<Cast>> cast;
 
   @override
   void initState() {
     upcoming = ApiKey().getUpcoming();
+    cast = ApiKey().getCast(widget.movie.id);
     super.initState();
   }
 
@@ -51,7 +54,7 @@ class _DetialPageState extends State<DetialPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.movie.title!,
+                    widget.movie.title ?? widget.movie.name,
                     style: const TextStyle(
                         fontSize: 27,
                         fontWeight: FontWeight.w900,
@@ -77,7 +80,6 @@ class _DetialPageState extends State<DetialPage> {
                       ),
                     ],
                   ),
-
                   const SizedBox(
                     height: 10,
                   ),
@@ -161,7 +163,7 @@ class _DetialPageState extends State<DetialPage> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              widget.movie.releaseDate!.toString(),
+                              widget.movie.releaseDate ?? "2024",
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w900,
@@ -199,9 +201,80 @@ class _DetialPageState extends State<DetialPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-
+                  const Text(
+                    "Cast",
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 170,
+                    child: FutureBuilder<List<Cast>>(
+                      future: cast,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        } else if (snapshot.hasData) {
+                          return ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                width: 10,
+                              );
+                            },
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.all(8),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      height: 100,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            "${ApiKey.imagePath}${snapshot.data![index].profilePath}",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 4,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      snapshot.data![index].name!,
+                                      style: const TextStyle(
+                                        color: AppColors.kWhite,
+                                        // fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                   const Text(
                     "More Like This",
                     style: TextStyle(
@@ -210,7 +283,7 @@ class _DetialPageState extends State<DetialPage> {
                         color: AppColors.kPrimary),
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 20,
                   ),
                   SizedBox(
                     child: FutureBuilder(
@@ -229,14 +302,6 @@ class _DetialPageState extends State<DetialPage> {
                       },
                     ),
                   ),
-                  // Text(
-                  //   movie.id.toString(), // Convert List<int> to String
-                  //   style: const TextStyle(
-                  //     fontSize: 14,
-                  //     // fontWeight: FontWeight.w900,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
                 ],
               ),
             ),

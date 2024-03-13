@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movie_api/app/models/article_model.dart';
-import 'package:movie_api/app/services/new_api.dart';
+import 'package:movie_api/app/models/article.dart';
+import 'package:movie_api/app/services/news_api.dart';
 import 'package:movie_api/app/views/home/HomePages/newspage/newscard.dart';
 
-import '../../../../models/trending.dart';
-import '../../../../services/api/apikey.dart';
 import '../../../../utils/colors.dart';
-
 
 class News extends StatefulWidget {
   const News({super.key});
@@ -16,14 +13,12 @@ class News extends StatefulWidget {
 }
 
 class _NewsState extends State<News> {
-  late Future<List<Article>> articles;
-
+  late final Future<List<Articles>> articles;
 
   @override
   void initState() {
     super.initState();
     articles = NewsService().getEntertainmentNews();
-
   }
 
   @override
@@ -51,7 +46,7 @@ class _NewsState extends State<News> {
                 const Padding(
                   padding: EdgeInsets.only(left: 19, bottom: 20),
                   child: Text(
-                    "Trending Movies",
+                    "Trending News",
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -63,6 +58,7 @@ class _NewsState extends State<News> {
                     future: articles,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
+                        print(snapshot);
                         return Center(
                           child: Text(snapshot.hasError.toString()),
                         );
@@ -74,7 +70,6 @@ class _NewsState extends State<News> {
                     },
                   ),
                 ),
-           
               ],
             ),
           ),

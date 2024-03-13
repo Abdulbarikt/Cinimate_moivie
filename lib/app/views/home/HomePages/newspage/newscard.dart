@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../services/api/apikey.dart';
@@ -19,11 +20,28 @@ class NewsCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      'data',
+                      style: TextStyle(color: Colors.amber),
+                    ),
                     SizedBox(
                       height: 200,
                       width: double.infinity,
-                      child: Image.network(
-                        '${ApiKey.imagePath}${snapshot.data[index].urlToImage}',
+                      child:
+
+                          // CachedNetworkImage(
+                          //   imageUrl: snapshot.data.urlToImage.toString(),
+                          //   height: 160,
+                          //   width: double.infinity,
+                          //   fit: BoxFit.cover,
+                          //   placeholder: (context, url) =>
+                          //       const Center(child: CircularProgressIndicator()),
+                          //   errorWidget: (context, url, error) =>
+                          //       const Icon(Icons.error, size: 160),
+                          // ),
+
+                          Image.network(
+                        '${ApiKey.imagePath}${snapshot.data![index].urlToImage}',
                         filterQuality: FilterQuality.high,
                         fit: BoxFit.fill,
                       ),
@@ -34,12 +52,13 @@ class NewsCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Title
+
                           Text(
                             snapshot.data[index].title,
                             style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.amber),
                           ),
                           const SizedBox(height: 8),
                           // Subtitle
