@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:movie_api/app/models/cast.dart';
 import 'package:movie_api/app/models/trending.dart';
 
+
 import '../../models/tvshow.dart';
 
 class ApiKey {
+
   static const apikey = "f495adcbdf28ad96fdf954a0df47a539";
 
   static const apiReadAccessToken =
@@ -81,4 +83,6 @@ class ApiKey {
       throw Exception("Failed to load cast");
     }
   }
+
+
 }

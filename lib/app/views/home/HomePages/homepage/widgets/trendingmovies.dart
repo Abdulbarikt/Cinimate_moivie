@@ -17,7 +17,7 @@ class TrendingMovies extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: CarouselSlider.builder(
-        itemCount: 10,
+        itemCount: snapshot.data.length,
         options: CarouselOptions(
             enlargeCenterPage: true,
             autoPlay: true,
