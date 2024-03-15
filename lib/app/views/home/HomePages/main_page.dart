@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
     const Search(),
     const NewsPage(),
     const WishList(),
-    const Profile(),
+    Profile(),
   ];
 
   @override

@@ -5,6 +5,7 @@ import 'package:movie_api/app/views/home/auth/forgetpass_page/forget.dart';
 import 'package:movie_api/app/views/home/auth/signup_page/signup.dart';
 import 'package:movie_api/app/views/home/HomePages/main_page.dart';
 
+import '../../../../services/google_services.dart';
 import '../../../../utils/colors.dart';
 import '../../../widgets/SignUpButton.dart';
 import '../../../widgets/Log_Divider.dart';
@@ -15,6 +16,8 @@ import '../../../widgets/google_button.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -34,114 +37,135 @@ class LoginScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Hi, Welcome Back! 👋',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.kWhite,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Hi, Welcome Back! 👋',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.kWhite,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                const SizedBox(height: 26),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PField(
-                      controller: email,
-                      width: 327,
-                      height: 52,
-                      hintText: "Email",
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 8),
-                    PField(
-                      controller: password,
-                      width: 327,
-                      height: 52,
-                      hintText: "Password",
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ForgotButton(
-                      onPressed: () {
-                        Get.to(() => const ForgetPass());
-                      },
-                      title: 'Forgot Password?',
-                      textStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.kBlackColor),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Column(
-                  children: [
-                    PButton(
-                      onTap: () async {
-                        Get.to(() =>  MainPage());
-                      },
-                      text: 'LogIn',
-                      color: AppColors.kPrimary,
-                      borderRadius: 20,
-                      height: 46,
-                      width: 327,
-                      fontSize: 14,
-                    ),
-                    const SizedBox(height: 14),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: SignUpButton(
-                        title: 'Don’t have an account?',
-                        subtitle: ' Create here',
-                        onTab: () {
-                          Get.to(() => const SignUp());
-                        },
-                        subtitleTextStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.kPrimary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 45),
-                  child: Column(
+                  const SizedBox(height: 8),
+                  const SizedBox(height: 26),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Log_Divider(title: 'Or Sign In with'),
-                      const SizedBox(height: 34),
-                      GoogleButton(
-                        height: 56,
-                        textColor: AppColors.kWhite,
-                        width: 280,
-                        onTap: () async {
-                          // await FirebaseServices().signInWithGoolge();
+                      PField(
+                        controller: email,
+                        width: 327,
+                        height: 52,
+                        hintText: "Email",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          // You can add more complex validation here if needed
+                          return null;
                         },
-                        borderRadius: 24,
-                        bgColor: AppColors.kBackground.withOpacity(0.3),
-                        text: 'Continue with Google',
-                        icons: AppAssets.kGoogleLogo,
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      PField(
+                        controller: password,
+                        width: 327,
+                        height: 52,
+                        hintText: "Password",
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          // You can add more complex validation here if needed
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ForgotButton(
+                        onPressed: () {
+                          Get.to(() => const ForgetPass());
+                        },
+                        title: 'Forgot Password?',
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.kBlackColor),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Column(
+                    children: [
+                      PButton(
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            // If the form is valid, proceed with login
+                            Get.to(() => const MainPage());
+                          }
+                        },
+                        text: 'LogIn',
+                        color: AppColors.kPrimary,
+                        borderRadius: 20,
+                        height: 46,
+                        width: 327,
+                        fontSize: 14,
+                      ),
+                      const SizedBox(height: 14),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: SignUpButton(
+                          title: 'Don’t have an account?',
+                          subtitle: ' Create here',
+                          onTab: () {
+                            Get.to(() => const SignUp());
+                          },
+                          subtitleTextStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.kPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Column(
+                      children: [
+                        const Log_Divider(title: 'Or Sign In with'),
+                        const SizedBox(height: 34),
+                        GoogleButton(
+                          height: 56,
+                          textColor: AppColors.kWhite,
+                          width: 260,
+                          onTap: () async {
+                            await FirebaseServices().signInWithGoolge();
+                            Get.to(() => const MainPage());
+                          },
+                          borderRadius: 24,
+                          bgColor: AppColors.kBackground.withOpacity(0.3),
+                          text: 'Continue with Google',
+                          icons: AppAssets.kGoogleLogo,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

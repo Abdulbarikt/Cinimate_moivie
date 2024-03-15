@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import '../../../../../services/api/apikey.dart';
 import '../detialpage.dart';
 
-class PopularTvShowSlider extends StatelessWidget {
-  const PopularTvShowSlider({
+class CustomSlider extends StatelessWidget {
+  const CustomSlider({
     super.key,
     required this.snapshot,
   });

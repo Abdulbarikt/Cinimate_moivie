@@ -4,11 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:movie_api/app/models/cast.dart';
 import 'package:movie_api/app/models/trending.dart';
 
-
 import '../../models/tvshow.dart';
 
 class ApiKey {
-
   static const apikey = "f495adcbdf28ad96fdf954a0df47a539";
 
   static const apiReadAccessToken =
@@ -26,6 +24,29 @@ class ApiKey {
       return decodeData.map((movie) => Trending.fromJson(movie)).toList();
     } else {
       throw Exception('Something Happend');
+    }
+  }
+
+  static const malayalamUrl =
+      'https://api.themoviedb.org/3/discover/movie?api_key=f495adcbdf28ad96fdf954a0df47a539&with_original_language=ml';
+  Future<List<Trending>> getMalayamLanguage() async {
+    final response = await http.get(Uri.parse(malayalamUrl));
+    if (response.statusCode == 200) {
+      final decodeData = jsonDecode(response.body)['results'] as List;
+      return decodeData.map((movie) => Trending.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something Happend');
+    }
+  }
+
+  Future<List<Trending>> getSimilarMovies(int movieId) async {
+    final response = await http.get(Uri.parse(
+        "https://api.themoviedb.org/3/movie/$movieId/similar?api_key=$apikey"));
+    if (response.statusCode == 200) {
+      final decodeData = json.decode(response.body)['results'] as List;
+      return decodeData.map((movie) => Trending.fromJson(movie)).toList();
+    } else {
+      throw Exception("Failed to load cast");
     }
   }
 
@@ -57,7 +78,7 @@ class ApiKey {
     }
   }
 
-  final baseUrl = 'https://api.themoviedb.org/3/';
+  final String baseUrl = 'https://api.themoviedb.org/3';
   var key = '?api_key=f495adcbdf28ad96fdf954a0df47a539';
   late String endPoint;
   Future<List<TvShow>> getPopularTvShows() async {
@@ -83,6 +104,4 @@ class ApiKey {
       throw Exception("Failed to load cast");
     }
   }
-
-
 }

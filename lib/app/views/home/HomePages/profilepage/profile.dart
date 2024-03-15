@@ -1,10 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:movie_api/app/controller/auth_countroller.dart';
+import 'package:movie_api/app/views/home/HomePages/profilepage/faq.dart';
+import 'package:movie_api/app/views/home/HomePages/profilepage/help.dart';
+import 'package:movie_api/app/views/home/HomePages/profilepage/support.dart';
+import 'package:movie_api/app/views/home/HomePages/profilepage/terms.dart';
+import 'package:movie_api/app/views/home/auth/login_page/login.dart';
 import '../../../../utils/colors.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({
     super.key,
   });
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  AuthController userData = Get.put(AuthController());
+
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  @override
+  void initState() {
+    super.initState();
+    userData.getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,32 +37,67 @@ class Profile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage('assets/images/profile.jpg'),
-              ),
+            const SizedBox(
+              height: 40,
             ),
+            // Obx(
+            //   () => Text(
+            //     userData.email.value,
+            //     style: const TextStyle(
+            //       color: Colors.white,
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.bold,
+            //     ),
+            //   ),
+            // ),
+            // Center(
+            //   child: CircleAvatar(
+            //       radius: 60,
+            //       backgroundImage: NetworkImage(
+            //           FirebaseAuth.instance.currentUser!.photoURL!)),
+            // ),
             const SizedBox(height: 16.0),
-            const Center(
+            Center(
               child: Column(
                 children: [
-                  Text(
-                    "Shani",
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  const SizedBox(height: 8.0),
+
+                  Obx(
+                    () => Text(
+                      userData.name.value,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    'Bariponmala121@gmail.com',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: AppColors.kWhite,
+                  // Text(
+                  //   FirebaseAuth.instance.currentUser!.displayName!,
+                  //   style: const TextStyle(
+                  //     color: Colors.white,
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                  const SizedBox(height: 5),
+                  Obx(
+                    () => Text(
+                      userData.email.value,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
+                  // Text(
+                  //   '${FirebaseAuth.instance.currentUser!.email}',
+                  //   style: const TextStyle(
+                  //     color: Colors.white,
+                  //     fontSize: 14,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -48,8 +105,8 @@ class Profile extends StatelessWidget {
             const Divider(
               color: AppColors.kPrimary,
               thickness: 2,
-              indent: 20,
-              endIndent: 20,
+              indent: 30,
+              endIndent: 30,
             ),
             const SizedBox(height: 35),
             Padding(
@@ -80,14 +137,16 @@ class Profile extends StatelessWidget {
                         color: Colors.white,
                       ),
                       title: const Text(
-                        'Language',
+                        'Terms and Conditions',
                         style: TextStyle(color: Colors.white),
                       ),
                       trailing: const Icon(
                         Icons.arrow_forward,
                         color: Colors.white,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const Terms());
+                      },
                     ),
                   ),
                   Container(
@@ -114,14 +173,16 @@ class Profile extends StatelessWidget {
                         color: Colors.white,
                       ),
                       title: const Text(
-                        'Terms and Conditions',
+                        'FaQ',
                         style: TextStyle(color: Colors.white),
                       ),
                       trailing: const Icon(
                         Icons.arrow_forward,
                         color: Colors.white,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const Faq());
+                      },
                     ),
                   ),
                   Container(
@@ -155,7 +216,9 @@ class Profile extends StatelessWidget {
                         Icons.arrow_forward,
                         color: Colors.white,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const SupportPage());
+                      },
                     ),
                   ),
                   Container(
@@ -189,7 +252,9 @@ class Profile extends StatelessWidget {
                         Icons.arrow_forward,
                         color: Colors.white,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const HelpPage());
+                      },
                     ),
                   ),
                   Container(
@@ -223,7 +288,9 @@ class Profile extends StatelessWidget {
                         Icons.arrow_forward,
                         color: Colors.white,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.offAll(() => LoginScreen());
+                      },
                     ),
                   ),
                 ],

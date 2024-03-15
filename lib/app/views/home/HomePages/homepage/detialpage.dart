@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:movie_api/app/models/cast.dart';
 import 'package:movie_api/app/models/trending.dart';
 import 'package:movie_api/app/services/api/apikey.dart';
 import 'package:movie_api/app/utils/colors.dart';
-import 'package:movie_api/app/views/home/HomePages/homepage/widgets/upcoming.dart';
+
+import 'widgets/customslider.dart';
 
 class DetialPage extends StatefulWidget {
   final movie;
@@ -14,12 +18,12 @@ class DetialPage extends StatefulWidget {
 }
 
 class _DetialPageState extends State<DetialPage> {
-  late Future<List<Trending>> upcoming;
+  late Future<List<Trending>> similar;
   late Future<List<Cast>> cast;
 
   @override
   void initState() {
-    upcoming = ApiKey().getUpcoming();
+    similar = ApiKey().getSimilarMovies(widget.movie.id);
     cast = ApiKey().getCast(widget.movie.id);
     super.initState();
   }
@@ -27,6 +31,32 @@ class _DetialPageState extends State<DetialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.snackbar(
+              'Cinimate',
+              'Added to wishlist',
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.black,
+              colorText: Colors.white,
+              borderRadius: 10,
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              duration: const Duration(seconds: 3),
+            );
+            final user = FirebaseAuth.instance.currentUser;
+            FirebaseFirestore.instance
+                .collection('wishlist')
+                .doc(user!.uid)
+                .collection('spwish')
+                .doc()
+                .set({
+              "movie": widget.movie.title ?? widget.movie.name,
+              "image": widget.movie.backdropPath,
+              "description": widget.movie.overview,
+            });
+          },
+          child: const Icon(Icons.favorite)),
       backgroundColor: AppColors.kBlackColor,
       body: CustomScrollView(
         slivers: [
@@ -36,13 +66,10 @@ class _DetialPageState extends State<DetialPage> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(24),
-                    bottomRight: Radius.circular(24)),
                 child: Image.network(
                   "${ApiKey.imagePath}${widget.movie.backdropPath}",
                   filterQuality: FilterQuality.high,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -116,7 +143,6 @@ class _DetialPageState extends State<DetialPage> {
                         width: 15,
                       ),
                       Container(
-                        // height: 39,
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: AppColors.kPrimary,
@@ -195,7 +221,6 @@ class _DetialPageState extends State<DetialPage> {
                       widget.movie.overview!,
                       style: const TextStyle(
                         fontSize: 14,
-                        // fontWeight: FontWeight.w900,
                         color: Colors.white,
                       ),
                     ),
@@ -259,7 +284,12 @@ class _DetialPageState extends State<DetialPage> {
                                       snapshot.data![index].name!,
                                       style: const TextStyle(
                                         color: AppColors.kWhite,
-                                        // fontSize: 14,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data![index].character!,
+                                      style: const TextStyle(
+                                        color: AppColors.kWhite,
                                       ),
                                     ),
                                   ],
@@ -287,14 +317,14 @@ class _DetialPageState extends State<DetialPage> {
                   ),
                   SizedBox(
                     child: FutureBuilder(
-                      future: upcoming,
+                      future: similar,
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
                             child: Text(snapshot.hasError.toString()),
                           );
                         } else if (snapshot.hasData) {
-                          return UpcoimgSlider(snapshot: snapshot);
+                          return CustomSlider(snapshot: snapshot);
                         } else {
                           return const Center(
                               child: CircularProgressIndicator());

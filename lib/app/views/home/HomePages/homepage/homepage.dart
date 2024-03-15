@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:movie_api/app/models/tvshow.dart';
-import 'package:movie_api/app/views/home/HomePages/homepage/widgets/popular.dart';
+import 'package:movie_api/app/views/home/HomePages/homepage/widgets/customslider.dart';
 
 import '../../../../models/trending.dart';
 import '../../../../services/api/apikey.dart';
 import '../../../../utils/colors.dart';
-import 'widgets/toprated.dart';
 import 'widgets/trendingmovies.dart';
-import 'widgets/upcoming.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   late Future<List<Trending>> trendingMovies;
   late Future<List<Trending>> topRated;
   late Future<List<Trending>> upcoming;
+  late Future<List<Trending>> malayalam;
+
   late Future<List<TvShow>> popular;
 
   @override
@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     topRated = ApiKey().getTopRated();
     upcoming = ApiKey().getUpcoming();
     popular = ApiKey().getPopularTvShows();
+    malayalam = ApiKey().getMalayamLanguage();
   }
 
   @override
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                           child: Text(snapshot.hasError.toString()),
                         );
                       } else if (snapshot.hasData) {
-                        return TopRatedSlider(snapshot: snapshot);
+                        return CustomSlider(snapshot: snapshot);
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
@@ -110,6 +111,35 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(
                   height: 20,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 19, bottom: 20),
+                  child: Text(
+                    "Malayalam Movies",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.kPrimary),
+                  ),
+                ),
+                SizedBox(
+                  child: FutureBuilder(
+                    future: malayalam,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.hasError.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        return CustomSlider(snapshot: snapshot);
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 19, bottom: 20),
@@ -130,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                           child: Text(snapshot.hasError.toString()),
                         );
                       } else if (snapshot.hasData) {
-                        return UpcoimgSlider(snapshot: snapshot);
+                        return CustomSlider(snapshot: snapshot);
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
@@ -159,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                           child: Text(snapshot.hasError.toString()),
                         );
                       } else if (snapshot.hasData) {
-                        return PopularTvShowSlider(snapshot: snapshot);
+                        return CustomSlider(snapshot: snapshot);
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }

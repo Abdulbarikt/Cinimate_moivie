@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class PField extends StatelessWidget {
   const PField({
-    super.key,
+    Key? key,
     this.keyboardType,
     required this.controller,
     required this.width,
@@ -15,8 +15,9 @@ class PField extends StatelessWidget {
     this.prefixIconColor,
     this.inputFormatters,
     this.maxLines,
-    this.hintText, // Make hintText optional
-  });
+    this.hintText,
+    this.validator, // Added validator parameter
+  }) : super(key: key);
 
   final List<TextInputFormatter>? inputFormatters;
   final Widget? prefixIcon;
@@ -27,7 +28,8 @@ class PField extends StatelessWidget {
   final Color? hintTextColor, prefixIconColor;
   final TextInputType? keyboardType;
   final int? maxLines;
-  final String? hintText; // Make hintText optional
+  final String? hintText;
+  final String? Function(String?)? validator; // Validator function
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class PField extends StatelessWidget {
           fontWeight: FontWeight.w500,
           color: hintTextColor ?? Colors.white,
         ),
-        hintText: hintText, // Use provided hintText if available
+        hintText: hintText,
         prefixIcon: prefixIcon,
         prefixIconColor: prefixIconColor,
         enabledBorder: border,
@@ -66,6 +68,7 @@ class PField extends StatelessWidget {
       onChanged: onChanged,
       inputFormatters: inputFormatters,
       onTapOutside: onTapOutside,
+      validator: validator, // Assigning the validator function
     );
   }
 }

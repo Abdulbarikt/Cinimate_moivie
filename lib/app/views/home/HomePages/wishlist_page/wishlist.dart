@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import '../../../../services/api/apikey.dart';
 import '../../../../utils/colors.dart';
 
 class WishList extends StatelessWidget {
@@ -9,6 +12,7 @@ class WishList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: AppColors.kBlackColor,
       appBar: AppBar(
@@ -24,46 +28,41 @@ class WishList extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        children: [
-          WishListCard(
-            title: ' Shani',
-            subtitle: 'Ponmala ',
-            imageUrl:
-                "https://i.pinimg.com/564x/b9/15/f5/b915f535c5a791058b211a527612e83c.jpg",
-            onRemove: () {},
-          ),
-          const SizedBox(height: 18),
-          WishListCard(
-            title: 'Shani',
-            subtitle: 'Ponmala',
-            imageUrl:
-                'https://i.pinimg.com/564x/d2/72/65/d27265d5a2b6d1f28818d0a5fff82035.jpg',
-            onRemove: () {},
-          ),
-          const SizedBox(height: 18),
-          WishListCard(
-            title: 'Shani',
-            subtitle: 'Ponmala',
-            imageUrl:
-                'https://i.pinimg.com/564x/d2/72/65/d27265d5a2b6d1f28818d0a5fff82035.jpg',
-            onRemove: () {},
-          ),
-        ],
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('wishlist')
+            .doc(user!.uid)
+            .collection("spwish")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final data = snapshot.data!.docs[index];
+                return WishListCard(
+                  title: data['movie'],
+                  subtitle: data['description'],
+                  imageUrl: data['image'],
+                );
+              },
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
 }
 
 class WishListCard extends StatelessWidget {
-  final String? title;
+  final String title;
   final String? subtitle;
   final String? imageUrl;
   final VoidCallback? onRemove;
 
   const WishListCard({
-    this.title,
+    required this.title,
     this.subtitle,
     this.imageUrl,
     this.onRemove,
@@ -75,7 +74,7 @@ class WishListCard extends StatelessWidget {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 4),
-      color: AppColors.kBackground2,
+      color: AppColors.kWhite,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
@@ -88,15 +87,15 @@ class WishListCard extends StatelessWidget {
               topRight: Radius.circular(12),
             ),
             child: Image.network(
-              imageUrl!,
-              height: 120,
+              "${ApiKey.imagePath}$imageUrl",
+              height: 180,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
           ),
           ListTile(
             title: Text(
-              title!,
+              title,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -105,6 +104,7 @@ class WishListCard extends StatelessWidget {
             ),
             subtitle: Text(
               subtitle!,
+              maxLines: 2,
               style: const TextStyle(
                 fontSize: 14,
                 color: Colors.black,
