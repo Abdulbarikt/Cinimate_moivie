@@ -2,10 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:movie_api/app/utils/colors.dart';
 
-class Search extends StatelessWidget {
+import '../../../../models/trending.dart';
+import '../../../../services/api/apikey.dart';
+import 'serarchslider.dart';
+
+class Search extends StatefulWidget {
   const Search({
     super.key,
   });
+
+  @override
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  late Future<List<Trending>> searchMovies;
+
+  @override
+  void initState() {
+    super.initState();
+    searchMovies = Future.value([]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +47,11 @@ class Search extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             TextField(
+              onChanged: (value) {
+                setState(() {
+                  searchMovies = ApiKey().searchMovie(value);
+                });
+              },
               decoration: InputDecoration(
                 suffixIcon: const Icon(
                   Icons.search_rounded,
@@ -54,18 +76,57 @@ class Search extends StatelessWidget {
             const SizedBox(
               height: 90,
             ),
-            Column(
-              children: [
-                Lottie.asset("assets/images/No_data.json"),
-                const SizedBox(
-                  height: 8,
-                ),
-                const Text(
-                  "Search for your favorite movies ",
-                  style: TextStyle(fontSize: 13, color: AppColors.kPrimary),
-                )
-              ],
-            )
+            Expanded(
+              child: FutureBuilder<List<Trending>>(
+                future: searchMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Error: ${snapshot.error}',
+                        style: const TextStyle(color: AppColors.kWhite),
+                      ),
+                    );
+                  } else if (snapshot.hasData) {
+                    return SearchSlider(
+                      snapshot: snapshot,
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Lottie.asset("assets/images/No_data.json"),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          const Text(
+                            "Search for your favorite movies ",
+                            style: TextStyle(
+                                fontSize: 13, color: AppColors.kPrimary),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+            // Column(
+            //   children: [
+            //     Lottie.asset("assets/images/No_data.json"),
+            //     const SizedBox(
+            //       height: 8,
+            //     ),
+            //     const Text(
+            //       "Search for your favorite movies ",
+            //       style: TextStyle(fontSize: 13, color: AppColors.kPrimary),
+            //     )
+            //   ],
+            // )
           ],
         ),
       ),

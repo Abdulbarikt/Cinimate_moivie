@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie_api/app/services/firebase_options.dart';
+import 'app/views/home/HomePages/homepage/homepage.dart';
 import 'app/views/home/HomePages/main_page.dart';
 import 'app/views/home/Onboarding/homepage.dart';
 
@@ -31,10 +32,9 @@ class MyApp extends StatelessWidget {
           //       if (snapshot.hasData) {
           //         return const MainPage();
           //       } else {
-          //         return const OnboardingPage();
+          //         return const HomePage();
           //       }
           //     }),
-
           const OnboardingPage(),
     );
   }

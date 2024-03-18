@@ -42,7 +42,7 @@ class WishList extends StatelessWidget {
                 final data = snapshot.data!.docs[index];
                 return WishListCard(
                   onRemove: () {
-                    // FirebaseFirestore.instance.collection('wishlist').doc(user!.uid).collection('spwish')
+                    deleteWishListCard(user.uid, data.id);
                   },
                   title: data['movie'],
                   subtitle: data['description'],
@@ -55,6 +55,20 @@ class WishList extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+Future<void> deleteWishListCard(String userId, String docId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('wishlist')
+        .doc(userId)
+        .collection("spwish")
+        .doc(docId)
+        .delete();
+    print('Wishlist card deleted successfully');
+  } catch (error) {
+    print('Error deleting wishlist card: $error');
   }
 }
 

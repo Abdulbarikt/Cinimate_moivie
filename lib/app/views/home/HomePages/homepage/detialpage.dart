@@ -2,16 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:movie_api/app/models/cast.dart';
+import 'package:movie_api/app/models/trailer.dart';
 import 'package:movie_api/app/models/trending.dart';
 import 'package:movie_api/app/services/api/apikey.dart';
 import 'package:movie_api/app/utils/colors.dart';
+import 'package:movie_api/app/views/home/HomePages/homepage/widgets/trailers.dart';
 
 import 'widgets/customslider.dart';
 
 class DetialPage extends StatefulWidget {
   final movie;
-  const DetialPage({super.key, required this.movie});
+  const DetialPage({
+    super.key,
+    required this.movie,
+  });
 
   @override
   State<DetialPage> createState() => _DetialPageState();
@@ -20,11 +26,15 @@ class DetialPage extends StatefulWidget {
 class _DetialPageState extends State<DetialPage> {
   late Future<List<Trending>> similar;
   late Future<List<Cast>> cast;
+  late Future<TrailerModel> trailer;
+
+  List<Map<String, dynamic>> movieTrailerList = [];
 
   @override
   void initState() {
     similar = ApiKey().getSimilarMovies(widget.movie.id);
     cast = ApiKey().getCast(widget.movie.id);
+    trailer = ApiKey().trailer(widget.movie.id);
     super.initState();
   }
 
@@ -44,7 +54,7 @@ class _DetialPageState extends State<DetialPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               duration: const Duration(seconds: 3),
             );
-            final user = FirebaseAuth.instance.currentUser;
+            User? user = FirebaseAuth.instance.currentUser;
             FirebaseFirestore.instance
                 .collection('wishlist')
                 .doc(user!.uid)
@@ -66,10 +76,24 @@ class _DetialPageState extends State<DetialPage> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               background: ClipRRect(
-                child: Image.network(
-                  "${ApiKey.imagePath}${widget.movie.backdropPath}",
-                  filterQuality: FilterQuality.high,
-                  fit: BoxFit.contain,
+                child: FutureBuilder<TrailerModel>(
+                  future: trailer,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Trailer(videoId: snapshot.data!.results[0].key);
+                    } else if (snapshot.hasError) {
+                      return Image.network(
+                        "${ApiKey.imagePath}${widget.movie.backdropPath}",
+                        filterQuality: FilterQuality.high,
+                        fit: BoxFit.cover,
+                      );
+                    }
+                    return Image.network(
+                      "${ApiKey.imagePath}${widget.movie.backdropPath}",
+                      filterQuality: FilterQuality.high,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
               ),
             ),

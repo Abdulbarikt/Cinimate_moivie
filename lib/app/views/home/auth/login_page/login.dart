@@ -112,8 +112,7 @@ class LoginScreen extends StatelessWidget {
                       PButton(
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            // If the form is valid, proceed with login
-                            Get.to(() => const MainPage());
+                            Get.offAll(() => const MainPage());
                           }
                         },
                         text: 'LogIn',
@@ -154,7 +153,7 @@ class LoginScreen extends StatelessWidget {
                           width: 260,
                           onTap: () async {
                             await FirebaseServices().signInWithGoolge();
-                            Get.to(() => const MainPage());
+                            Get.offAll(() => const MainPage());
                           },
                           borderRadius: 24,
                           bgColor: AppColors.kBackground.withOpacity(0.3),

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_api/app/models/cast.dart';
 import 'package:movie_api/app/models/trending.dart';
 
+import '../../models/trailer.dart';
 import '../../models/tvshow.dart';
 
 class ApiKey {
@@ -100,6 +102,35 @@ class ApiKey {
     if (response.statusCode == 200) {
       final decodeData = json.decode(response.body)['cast'] as List;
       return decodeData.map((movie) => Cast.fromJson(movie)).toList();
+    } else {
+      throw Exception("Failed to load cast");
+    }
+  }
+
+  Future<TrailerModel> trailer(int id) async {
+    var movieTrailerUrl =
+        "https://api.themoviedb.org/3/movie/$id/videos?api_key=${ApiKey.apikey}";
+
+    var movieTrailerResponse = await http.get(Uri.parse(movieTrailerUrl));
+    if (movieTrailerResponse.statusCode == 200) {
+      var movieTrailerJson = jsonDecode(movieTrailerResponse.body);
+      return TrailerModel.fromJson(movieTrailerJson);
+    } else {
+      throw Exception('Failed to load movie trailer');
+    }
+  }
+
+  List<Trending> searchResult = [];
+  static const search =
+      "https://api.themoviedb.org/3/search/movie?api_key=855fc7bfdd6ecaed1362423aa8541807&query=";
+  Future<List<Trending>> searchMovie(String movieName) async {
+    final response = await http.get(Uri.parse(search + movieName));
+    if (response.statusCode == 200) {
+      final decodeData = json.decode(response.body)['results'] as List;
+      searchResult =
+          decodeData.map((movie) => Trending.fromJson(movie)).toList();
+
+      return searchResult;
     } else {
       throw Exception("Failed to load cast");
     }

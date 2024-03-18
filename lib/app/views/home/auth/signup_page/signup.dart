@@ -8,8 +8,10 @@ import 'package:movie_api/app/views/widgets/google_button.dart';
 import 'package:movie_api/app/views/widgets/p_field.dart';
 
 import '../../../../controller/auth_countroller.dart';
+import '../../../../services/google_services.dart';
 import '../../../../utils/colors.dart';
 import '../../../widgets/p_button.dart';
+import '../../HomePages/main_page.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({
@@ -181,7 +183,10 @@ class SignUp extends StatelessWidget {
                             height: 56,
                             textColor: AppColors.kWhite,
                             width: 260,
-                            onTap: () {},
+                            onTap: () async {
+                              await FirebaseServices().signInWithGoolge();
+                              Get.offAll(() => const MainPage());
+                            },
                             borderRadius: 24,
                             bgColor: AppColors.kBackground.withOpacity(0.3),
                             text: 'Continue with Google',
