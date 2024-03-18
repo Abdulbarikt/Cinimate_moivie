@@ -41,6 +41,9 @@ class WishList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final data = snapshot.data!.docs[index];
                 return WishListCard(
+                  onRemove: () {
+                    // FirebaseFirestore.instance.collection('wishlist').doc(user!.uid).collection('spwish')
+                  },
                   title: data['movie'],
                   subtitle: data['description'],
                   imageUrl: data['image'],

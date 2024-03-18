@@ -29,7 +29,7 @@ class CustomSlider extends StatelessWidget {
                 Get.to(() => DetialPage(movie: snapshot.data[index]));
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
                   height: 200,
                   width: 150,

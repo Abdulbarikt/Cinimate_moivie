@@ -40,28 +40,15 @@ class _ProfileState extends State<Profile> {
             const SizedBox(
               height: 40,
             ),
-            // Obx(
-            //   () => Text(
-            //     userData.email.value,
-            //     style: const TextStyle(
-            //       color: Colors.white,
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.bold,
-            //     ),
-            //   ),
-            // ),
-            // Center(
-            //   child: CircleAvatar(
-            //       radius: 60,
-            //       backgroundImage: NetworkImage(
-            //           FirebaseAuth.instance.currentUser!.photoURL!)),
-            // ),
+            const Center(
+                child: CircleAvatar(
+                    radius: 60,
+                    backgroundImage: AssetImage('assets/images/profile.jpg'))),
             const SizedBox(height: 16.0),
             Center(
               child: Column(
                 children: [
                   const SizedBox(height: 8.0),
-
                   Obx(
                     () => Text(
                       userData.name.value,
@@ -72,14 +59,6 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  // Text(
-                  //   FirebaseAuth.instance.currentUser!.displayName!,
-                  //   style: const TextStyle(
-                  //     color: Colors.white,
-                  //     fontSize: 18,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
                   const SizedBox(height: 5),
                   Obx(
                     () => Text(
@@ -91,13 +70,6 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                   ),
-                  // Text(
-                  //   '${FirebaseAuth.instance.currentUser!.email}',
-                  //   style: const TextStyle(
-                  //     color: Colors.white,
-                  //     fontSize: 14,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
