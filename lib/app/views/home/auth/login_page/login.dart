@@ -14,6 +14,7 @@ import '../../../widgets/forgot_button.dart';
 import '../../../widgets/p_field.dart';
 import '../../../widgets/google_button.dart';
 
+// ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
@@ -40,7 +41,7 @@ class LoginScreen extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   const Text(
                     'Hi, Welcome Back! 👋',
@@ -51,12 +52,13 @@ class LoginScreen extends StatelessWidget {
                       color: AppColors.kWhite,
                     ),
                   ),
-                  const SizedBox(height: 8),
                   const SizedBox(height: 26),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PField(
+                        obsecure: false,
+                        prefixIcon: Icon(Icons.email),
                         controller: email,
                         width: 327,
                         height: 52,
@@ -77,9 +79,9 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 8),
                       PField(
+                        obsecure: true,
                         controller: password,
-                        width: 327,
-                        height: 52,
+                        prefixIcon: Icon(Icons.lock),
                         hintText: "Password",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -102,11 +104,11 @@ class LoginScreen extends StatelessWidget {
                         title: 'Forgot Password?',
                         textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.kBlackColor),
+                            color: AppColors.kWhite),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Column(
                     children: [
                       PButton(
@@ -122,11 +124,11 @@ class LoginScreen extends StatelessWidget {
                         width: 327,
                         fontSize: 14,
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.only(left: 4),
                         child: SignUpButton(
-                          title: 'Don’t have an account?',
+                          title: 'Don’t have an account ?',
                           subtitle: ' Create here',
                           onTab: () {
                             Get.to(() => const SignUp());
@@ -140,13 +142,13 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 18),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: [
                         const Log_Divider(title: 'Or Sign In with'),
-                        const SizedBox(height: 34),
+                        const SizedBox(height: 18),
                         GoogleButton(
                           height: 56,
                           textColor: AppColors.kWhite,
@@ -160,6 +162,9 @@ class LoginScreen extends StatelessWidget {
                           text: 'Continue with Google',
                           icons: AppAssets.kGoogleLogo,
                         ),
+                        SizedBox(
+                          height: 30,
+                        )
                       ],
                     ),
                   ),

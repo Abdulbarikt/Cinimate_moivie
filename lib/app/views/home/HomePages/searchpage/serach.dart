@@ -82,8 +82,11 @@ class _SearchState extends State<Search> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                        child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(AppColors.kPrimary),
+                      strokeWidth: 3,
+                    ));
                   } else if (snapshot.hasError) {
                     return Center(
                       child: Text(
@@ -115,18 +118,6 @@ class _SearchState extends State<Search> {
                 },
               ),
             ),
-            // Column(
-            //   children: [
-            //     Lottie.asset("assets/images/No_data.json"),
-            //     const SizedBox(
-            //       height: 8,
-            //     ),
-            //     const Text(
-            //       "Search for your favorite movies ",
-            //       style: TextStyle(fontSize: 13, color: AppColors.kPrimary),
-            //     )
-            //   ],
-            // )
           ],
         ),
       ),

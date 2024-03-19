@@ -32,7 +32,7 @@ class SignUp extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/login.png'),
+                image: AssetImage('assets/images/signup.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -44,7 +44,7 @@ class SignUp extends StatelessWidget {
               child: SizedBox(
                 width: 327,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       'Create Account',
@@ -79,6 +79,8 @@ class SignUp extends StatelessWidget {
                       children: [
                         const SizedBox(height: 8),
                         PField(
+                          prefixIcon: Icon(Icons.person_3),
+                          obsecure: false,
                           controller: username,
                           width: 327,
                           height: 52,
@@ -100,6 +102,8 @@ class SignUp extends StatelessWidget {
                       children: [
                         const SizedBox(height: 7),
                         PField(
+                          prefixIcon: Icon(Icons.email),
+                          obsecure: false,
                           controller: email,
                           width: 327,
                           height: 52,
@@ -119,6 +123,8 @@ class SignUp extends StatelessWidget {
                       children: [
                         const SizedBox(height: 8),
                         PField(
+                          prefixIcon: Icon(Icons.lock),
+                          obsecure: true,
                           controller: password,
                           width: 327,
                           height: 52,
@@ -161,7 +167,7 @@ class SignUp extends StatelessWidget {
                           subtitleTextStyle: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.kWhite,
+                            color: AppColors.kPrimary,
                           ).copyWith(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -192,6 +198,9 @@ class SignUp extends StatelessWidget {
                             text: 'Continue with Google',
                             icons: AppAssets.kGoogleLogo,
                           ),
+                          SizedBox(
+                            height: 30,
+                          )
                         ],
                       ),
                     ),

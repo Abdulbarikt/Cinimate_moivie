@@ -27,7 +27,7 @@ class SignUpButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: AppColors.kWhite)
               .copyWith(
-                  color: AppColors.kBlackColor,
+                  color: AppColors.kWhite,
                   fontWeight: FontWeight.w600,
                   fontSize: 14),
           children: <TextSpan>[
