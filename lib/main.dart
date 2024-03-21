@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
               return const OnboardingPage();
             }
           }),
-      // const OnboardingPage(),
     );
   }
 }
